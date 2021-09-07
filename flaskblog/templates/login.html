@@ -1,0 +1,107 @@
+{% extends "layouts.html" %}
+{% block content %}
+    <div class="content-section">
+        <form action="" method="post">
+            {{ form.hidden_tag() }}
+            <fieldset class="form-group">
+                <legend class="border-bottom mb-4">Login</legend>
+                <div class="form-group">
+                    {{ form.email.label(class=" form-control-label") }}
+
+                    {% if form.email.errors %}
+                        {{ form.email(class="form-control form-control-md is-invalid") }}
+                        <div class="invalid-feedback">
+                            {% for error in form.email.errors %}
+                                <span>{{ error }}</span>
+                            {% endfor %}
+                        </div>
+                    {% else %}
+                        {{ form.email(class="form-control form-control-md") }}
+                    {%  endif %}
+                </div>
+
+
+                <div class="circle">
+                    <div id="orbit" >
+                        <svg viewBox='0 0 100 100' >
+                        <circle cx='50' cy='50' r='45' id='yellow'/>
+                            <path d="M 50 50 v -43" fill="transparent" stroke="black"/>
+                            <text x="32" y="20" id="outera">a</text>
+                            <text x="38" y="35" id="inner1" value="1" >1</text>
+                        <circle cx='50' cy='50' r='45' id='purple'/>
+                            <path d="M 50 50 Q 110 -11, 50 50" stroke="black" fill="transparent"/>
+                            <text x="60" y="20" id="outerb">b</text>
+                            <text x="55" y="35" id="inner2">2</text>
+                        <circle cx='50' cy='50' r='45' id='pink'/>
+                            <path d="M 50 50 h 43" fill="transparent" stroke="black"/>
+                            <text x="80" y="38" id="outerc">c</text>
+                            <text x="66" y="45" id="inner3">3</text>
+                        <circle cx='50' cy='50' r='45' id='gray'/>
+                            <path d="M 50 50 Q 45 45, 80 80" stroke="black" fill="transparent"/>
+                            <text x="80" y="68" id="outerd">d</text>
+                            <text x="65" y="61" id="inner4">4</text>
+                        <circle cx='50' cy='50' r='45' id='red'/>
+                            <path d="M 50 50 v 43  " fill="transparent" stroke="black"/>
+                            <text x="60" y="85" class="outere">e</text>
+                            <text x="54" y="72" class="inner5">5</text>
+                        <circle cx='50' cy='50' r='45' id='green'/>
+                            <path d="M 50 50 Q -14 115, 50 50" stroke="black" fill="transparent"/>
+                            <text x="34" y="85" class="outerf">f</text>
+                            <text x="39" y="72" class="inner6">6</text>
+                        <circle cx='50' cy='50' r='45' id='blue'/>
+                            <path d="M 50 50 h -43" fill="transparent" stroke="black"/>
+                            <text x="15" y="65" class="outerg">g</text>
+                            <text x="28" y="63" class="inner7">7</text>
+                        <circle cx='50' cy='50' r='45' id='orange'/>
+                            <path d="M 50 50 Q 44 44, 19.5 19.5" stroke="black" fill="transparent"/>
+                            <text x="15" y="40" class="outerh">h</text>
+                            <text x="28" y="46" class="inner8">8</text>
+                        </svg>
+                    </div>
+                </div>
+                <div class="buttons">
+                    <div class="orbitbuttons">
+                        <button id="innerorbit">Inner Orbit</button>
+                        <button id="outerorbit">Outer Orbit</button>
+                    </div>
+                    <div class="clockbuttons">
+                        <button id="anticlockwise">Anticlockwise</button>
+                        <button id="clockwise">Clockwise</button>          
+                    </div>
+                </div>
+
+
+
+                <div class="form-group">
+                    {{ form.password.label(class=" form-control-label") }}
+
+                    {% if form.password.errors %}
+                        {{ form.password(class="form-control form-control-md is-invalid") }}
+                        <div class="invalid-feedback">
+                            {% for error in form.password.errors %}
+                                <span>{{ error }}</span>
+                            {% endfor %}
+                        </div>
+                    {% else %}
+                       {{ form.password(class="form-control form-control-md") }}
+                    {% endif %}
+                </div>
+            </fieldset>
+            <div class="form-check">
+                {{ form.remember(class="form-check-input") }}
+                {{ form.remember.label(class="form-check-label") }}
+            </div>
+            <div class="form-group">
+                {{ form.submit(class="btn btn-outline-info") }}
+            </div>
+            <small class="ml-2">
+                <a href="#">Forgot Password?</a>
+            </small>
+        </form>
+    </div>
+    <div class="border-top pt-3">
+        <small class="text-muted">
+            Need An Account? <a href="{{ url_for('register') }}" class="ml-2">Sign Up Now</a>
+        </small>
+    </div>
+{% endblock content %}
