@@ -4,23 +4,7 @@
         <form action="" method="post">
             {{ form.hidden_tag() }}
             <fieldset class="form-group">
-                <legend class="border-bottom mb-4">Login</legend>
-                <div class="form-group">
-                    {{ form.email.label(class=" form-control-label") }}
-
-                    {% if form.email.errors %}
-                        {{ form.email(class="form-control form-control-md is-invalid") }}
-                        <div class="invalid-feedback">
-                            {% for error in form.email.errors %}
-                                <span>{{ error }}</span>
-                            {% endfor %}
-                        </div>
-                    {% else %}
-                        {{ form.email(class="form-control form-control-md") }}
-                    {%  endif %}
-                </div>
-
-
+                <legend class="border-bottom mb-4">Password</legend>
                 <div class="circle">
                     <div id="orbit" >
                         <svg viewBox='0 0 100 100' >

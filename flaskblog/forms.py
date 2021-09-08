@@ -15,12 +15,6 @@ class RegistrationForm(FlaskForm):
     # colors = QuerySelectField(query_factory=lambda: colors.query.all(), get_label="name")
     submit = SubmitField('Sign Up')
 
-# def choice_query():
-#         return Color.query
-
-# class ChoiceForm(FlaskForm):
-#     colors = QuerySelectField(query_factory=Color.query)
-
     def validate_username(self, username):
         user = User.query.filter_by(username=username.data).first()
         if user:
@@ -32,6 +26,10 @@ class RegistrationForm(FlaskForm):
         if user:
             raise ValidationError('This email has been taken, choose another.')
 
+
+class EmailForm(FlaskForm):
+     email = StringField('Email', validators=[DataRequired(), Email()])
+     submit = SubmitField('Confirm')
 
 class LoginForm(FlaskForm):
     email = StringField('Email', validators=[DataRequired(), Email()])

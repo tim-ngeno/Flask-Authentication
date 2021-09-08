@@ -1,6 +1,7 @@
 from flask import render_template, redirect, url_for, flash, request
+from flask_login.mixins import UserMixin
 from flaskblog import app, db, bcrypt
-from flaskblog.forms import RegistrationForm, LoginForm, UpdateAccountInfo
+from flaskblog.forms import RegistrationForm, EmailForm,LoginForm, UpdateAccountInfo
 from flaskblog.models import User
 from flask_login import login_user, current_user, logout_user, login_required
 
@@ -24,9 +25,21 @@ def register():
 
         db.session.add(user)
         db.session.commit()
-        flash(f"Account created, you can now login ", 'success')
-        return redirect(url_for('login'))
+        flash(f"Account created, confirm your email to log in ", 'success')
+        return redirect(url_for('email'))
     return render_template('register.html', title='Register', form=form)
+
+@app.route('/email', methods=['GET', 'POST'])
+def email():
+    form = EmailForm()
+    if form.validate_on_submit():
+        user = User.query.filter_by(email=form.email.data).first()
+        if user:
+            flash(f"Confirmation Success!", 'success')
+            return redirect(url_for('login'))
+        else:
+            flash(f"Confirmation failed, please check your email", 'danger')
+    return render_template('email.html', title='Email Confirmation', form=form)
 
 @app.route('/login', methods=['GET', 'POST'])
 def login():
