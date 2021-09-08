@@ -27,11 +27,10 @@ document.getElementById('clockwise').addEventListener("click", () => {
 var e = document.getElementById("color");
 // var strUser = e.options[e.selectedIndex].text;
 
-function saveColor(t) {
-  var url = "/register";
-  var data = {color: $(e.options[e.selectedIndex].val())};
-  $.post(url, data);
-}
+//function saveColor(t) {
+//  var url = "/register";
+//  var data = {color: $(e.options[e.selectedIndex].val())};
+//  $.post(url, data);
+//}
 
 
-document.getElementById('passsword').value = document.getElementById('innner1').firstChild.textContent;
