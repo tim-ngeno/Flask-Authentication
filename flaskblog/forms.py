@@ -2,7 +2,7 @@ from flask_wtf import FlaskForm
 from wtforms import StringField, BooleanField, PasswordField, SubmitField, SelectField
 from flask_wtf.file import FileField, FileAllowed
 from wtforms.validators import DataRequired, Email, EqualTo, Length, ValidationError
-from flaskblog.models import User
+from flaskblog.models import User, Color
 from wtforms.ext.sqlalchemy.fields import QuerySelectField
 
 
@@ -11,8 +11,8 @@ class RegistrationForm(FlaskForm):
     email = StringField('Email', validators=[DataRequired(), Email()])
     password = PasswordField('Password', validators=[DataRequired()])
     confirm_password = PasswordField('Confirm Password', validators=[DataRequired(), EqualTo('password')])
-    colors = SelectField(u'Choose Colour: ', choices=[('yellow'), ('purple'), ('pink'), ('gray'), ('red'), ('green'), ('blue'), ('orange')])
-    # colors = QuerySelectField(query_factory=lambda: colors.query.all(), get_label="name")
+    # colors = SelectField(u'Choose Colour: ', choices=[('yellow'), ('purple'), ('pink'), ('gray'), ('red'), ('green'), ('blue'), ('orange')])
+    colors = QuerySelectField(query_factory=lambda: Color.query.all(), get_label="name")
     submit = SubmitField('Sign Up')
 
     def validate_username(self, username):
