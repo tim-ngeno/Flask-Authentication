@@ -88,13 +88,5 @@ document.querySelector('#outerorbit').addEventListener("click", () => {
   document.querySelector('#password').value = document.querySelector('#password').value + charactersAtIndex.outer;
 });
 
-var e = document.getElementById("color");
-// var strUser = e.options[e.selectedIndex].text;
-
-//function saveColor(t) {
-//  var url = "/register";
-//  var data = {color: $(e.options[e.selectedIndex].val())};
-//  $.post(url, data);
-//}
 
 
