@@ -1,5 +1,4 @@
 from flask import render_template, redirect, url_for, flash, request
-from flask_login.mixins import UserMixin
 from flaskblog import app, db, bcrypt
 from flaskblog.forms import RegistrationForm, EmailForm,LoginForm, UpdateAccountInfo
 from flaskblog.models import User
@@ -21,8 +20,8 @@ def register():
     form = RegistrationForm()
     if form.validate_on_submit():
         hash_password = bcrypt.generate_password_hash(form.password.data).decode('utf-8')
-        user = User(username=form.username.data, email=form.email.data, password=hash_password)
-
+        user = User(username=form.username.data, email=form.email.data, password=hash_password, colors=form.colors.data)
+        
         db.session.add(user)
         db.session.commit()
         flash(f"Account created, confirm your email to log in ", 'success')
@@ -38,7 +37,7 @@ def email():
             flash(f"Confirmation Success!", 'success')
             return redirect(url_for('login'))
         else:
-            flash(f"Confirmation failed, please check your email", 'danger')
+            flash(f"Please check your email", 'danger')
     return render_template('email.html', title='Email Confirmation', form=form)
 
 @app.route('/login', methods=['GET', 'POST'])
@@ -47,13 +46,14 @@ def login():
         return redirect(url_for('home'))
     form = LoginForm()
     if form.validate_on_submit():
-        user = User()
-        bcrypt.check_password_hash(user.password, form.password.data)
-        login_user(user, remember=form.remember.data)
-        next_page = request.args.get('next')
-        return redirect(next_page) if next_page else redirect(url_for('account'))
-    else:
-        flash(f"Log in unsuccessful, check your password", 'danger')
+        user = User.query.filter_by(form.password.data)
+        if user and bcrypt.check_password_hash(user.password, form.password.data):
+            login_user(user, remember=form.remember.data)
+            next_page = request.args.get('next')
+            return redirect(next_page) if next_page else redirect(url_for('account'))
+        else:
+            flash(f"Login Failed!")
+            print(form.errors)
     return render_template('login.html', title='Login', form=form)
 
 
