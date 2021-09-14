@@ -46,14 +46,13 @@ def login():
         return redirect(url_for('home'))
     form = LoginForm()
     if form.validate_on_submit():
-        user = User.query.filter_by(form.password.data)
+        user = User.query.filter_by(password=form.password.data)
         if user and bcrypt.check_password_hash(user.password, form.password.data):
             login_user(user, remember=form.remember.data)
             next_page = request.args.get('next')
             return redirect(next_page) if next_page else redirect(url_for('account'))
         else:
-            flash(f"Login Failed!")
-            print(form.errors)
+            flash(f"Login Failed!", 'danger')
     return render_template('login.html', title='Login', form=form)
 
 
