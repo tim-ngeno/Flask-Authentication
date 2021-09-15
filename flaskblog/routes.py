@@ -1,4 +1,4 @@
-from flask import render_template, redirect, url_for, flash, request
+from flask import render_template, redirect, url_for, flash, request, session
 from flaskblog import app, db, bcrypt
 from flaskblog.forms import RegistrationForm, EmailForm,LoginForm, UpdateAccountInfo
 from flaskblog.models import User
@@ -21,10 +21,10 @@ def register():
     if form.validate_on_submit():
         hash_password = bcrypt.generate_password_hash(form.password.data).decode('utf-8')
         user = User(username=form.username.data, email=form.email.data, password=hash_password, colors=form.colors.data)
-        
+
         db.session.add(user)
         db.session.commit()
-        flash(f"Account created, confirm your email to log in ", 'success')
+        flash(f"Account created, re-enter your email to log in ", 'success')
         return redirect(url_for('email'))
     return render_template('register.html', title='Register', form=form)
 
@@ -34,19 +34,24 @@ def email():
     if form.validate_on_submit():
         user = User.query.filter_by(email=form.email.data).first()
         if user:
-            flash(f"Confirmation Success!", 'success')
+            session['attempt_user_email'] = user.email
+            session['attempt_user_color'] = user.colors
             return redirect(url_for('login'))
         else:
-            flash(f"Please check your email", 'danger')
+            flash(f"E-mail not associated with any account, kindly check e-mail or register", 'danger')
     return render_template('email.html', title='Email Confirmation', form=form)
 
 @app.route('/login', methods=['GET', 'POST'])
 def login():
+    attempt_user_email=session.get('attempt_user_email', None)
+    if attempt_user_email is None:
+        return redirect(url_for('email'))
     if current_user.is_authenticated:
         return redirect(url_for('home'))
     form = LoginForm()
+    form.email.data = attempt_user_email
     if form.validate_on_submit():
-        user = User.query.filter_by(password=form.password.data)
+        user = User.query.filter_by(email=attempt_user_email).first()
         if user and bcrypt.check_password_hash(user.password, form.password.data):
             login_user(user, remember=form.remember.data)
             next_page = request.args.get('next')
