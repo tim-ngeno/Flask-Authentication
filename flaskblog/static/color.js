@@ -1,8 +1,7 @@
 var colors = ["gray", "red", "green", "blue", "orange", "yellow", "purple", "pink"];
 var rotateOffset = 0;
 
-const USER_COLOR = "yellow"; // chosen by user during sign up
-
+const USER_COLOR = document.querySelector('#user-chosen-color').value;
 
 var currentColorPosition = ["gray", "red", "green", "blue", "orange", "yellow", "purple", "pink"];
 
